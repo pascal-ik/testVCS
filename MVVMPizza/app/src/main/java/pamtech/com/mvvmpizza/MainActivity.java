@@ -1,11 +1,14 @@
 package pamtech.com.mvvmpizza;
 
 import android.Manifest;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +23,9 @@ import com.google.android.gms.tasks.Task;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import pamtech.com.mvvmpizza.service.retrofit.models.JsonResponse;
+import pamtech.com.mvvmpizza.viewmodel.ProjectViewModel;
 /*
 @author Pascal Adjaero
  */
@@ -28,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public boolean mLocationPermissionGranted;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private ProjectViewModel mProjectViewModel;
     //private Location mLastKnownLocation;
   //  private FusedLocationProviderClient mFusedLocationProviderClient;
   //  private String mCurrentLocation;
@@ -38,9 +45,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLocationPermission();
-        //getDeviceLocation();
+        mProjectViewModel = ViewModelProviders.of(this).get(ProjectViewModel.class);
+        mProjectViewModel.getProjectJsonObservable().observe(this, new Observer<JsonResponse>() {
+            @Override
+            public void onChanged(@Nullable JsonResponse jsonResponse) {
+                //update UI
+                Log.d(TAG, "onChanged: show response" + jsonResponse);
+            }
+        });
+
     }
 
     private void getLocationPermission() {

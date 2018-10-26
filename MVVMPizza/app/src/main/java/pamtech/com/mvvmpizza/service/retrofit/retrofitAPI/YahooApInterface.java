@@ -9,7 +9,4 @@ public interface YahooApInterface {
     @GET("v1/public/yql")
     Call<JsonResponse> getNearByPizza(@Query("q") String query);
 
-
-
-
 }
