@@ -26,21 +26,21 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private boolean mLocationPermissionGranted;
+    public boolean mLocationPermissionGranted;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private Location mLastKnownLocation;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-    private String mCurrentLocation;
-    public String postalCode;
+    //private Location mLastKnownLocation;
+  //  private FusedLocationProviderClient mFusedLocationProviderClient;
+  //  private String mCurrentLocation;
+   // public String postalCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+       // mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLocationPermission();
-        getDeviceLocation();
+        //getDeviceLocation();
     }
 
     private void getLocationPermission() {
@@ -87,12 +87,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getDeviceLocation() {
+/*    private void getDeviceLocation() {
         Log.d(TAG, "getDeviceLocation: getting device location");
-        /*
+        *//*
          * Get the best and most recent location of the device, which may be null in rare
          * cases when a location is not available.
-         */
+         *//*
         try {
             if (mLocationPermissionGranted) {
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
@@ -142,5 +142,5 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
