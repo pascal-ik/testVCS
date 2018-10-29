@@ -61,4 +61,14 @@ public class Query {
         this.results = results;
     }
 
+    @Override
+    public String toString() {
+        return "Query{" +
+                "count=" + count +
+                ", created='" + created + '\'' +
+                ", lang='" + lang + '\'' +
+                ", diagnostics=" + diagnostics +
+                ", results=" + results +
+                '}';
+    }
 }

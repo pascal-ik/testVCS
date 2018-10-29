@@ -35,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean mLocationPermissionGranted;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private ProjectViewModel mProjectViewModel;
-    //private Location mLastKnownLocation;
-  //  private FusedLocationProviderClient mFusedLocationProviderClient;
-  //  private String mCurrentLocation;
-   // public String postalCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         getLocationPermission();
         mProjectViewModel = ViewModelProviders.of(this).get(ProjectViewModel.class);
+        mProjectViewModel.getDeviceLocation();
         mProjectViewModel.getProjectJsonObservable().observe(this, new Observer<JsonResponse>() {
             @Override
             public void onChanged(@Nullable JsonResponse jsonResponse) {
@@ -101,60 +98,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-/*    private void getDeviceLocation() {
-        Log.d(TAG, "getDeviceLocation: getting device location");
-        *//*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         *//*
-        try {
-            if (mLocationPermissionGranted) {
-                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: found location");
-                            // Set the map's camera position to the current location of the device.
-                            mLastKnownLocation = task.getResult();
-                            Log.d(TAG, "onComplete: last location" + mLastKnownLocation); //this will work only if device location is turned on
-                            mCurrentLocation = mLastKnownLocation.getLatitude() + "," + mLastKnownLocation.getLongitude();//else this will throw a null pointer error
-
-                            Log.d(TAG, "onComplete: " + mCurrentLocation);
-                            getPostalCode();
-
-                        } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
-
-                        }
-                    }
-                });
-
-            }
-        } catch (SecurityException e) {
-            Log.e("Exception: %s", e.getMessage());
-        }
-    }
-
-    private void getPostalCode(){
-        try{
-            List<Address> addresses;
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            addresses = geocoder.getFromLocation(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), 1);
-
-            String address = addresses.get(0).getAddressLine(0);
-            Log.d(TAG, "getPostalCode: address: " + address);
-            String city = addresses.get(0).getAddressLine(1);
-            Log.d(TAG, "getPostalCode: city: " + city);
-            String country = addresses.get(0).getAddressLine(2);
-            Log.d(TAG, "getPostalCode: country: " + country);
-
-            postalCode = addresses.get(0).getPostalCode();
-            Log.d(TAG, "getPostalCode: zipcode: " + postalCode);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 }

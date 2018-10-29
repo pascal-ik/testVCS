@@ -17,4 +17,10 @@ public class JsonResponse {
         this.query = query;
     }
 
+    @Override
+    public String toString() {
+        return "JsonResponse{" +
+                "query=" + query +
+                '}';
+    }
 }

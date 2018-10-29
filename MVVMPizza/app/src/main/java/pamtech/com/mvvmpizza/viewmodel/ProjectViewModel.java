@@ -42,15 +42,17 @@ public class ProjectViewModel extends AndroidViewModel {
         super(application);
         mApplication = application;
         getDeviceLocation();
-        String query = "select * from local.search where zip%3D' "+ postalCode +" ' and query%3D'pizza'&format=json&diagnostics=true&callback=";
+        String query = "select * from local.search where zip='78759' and query='pizza'";
         mResponseRepository = new ResponseRepository();
+/*        projectJsonObservable = mResponseRepository.getDefaultapi();*/
         projectJsonObservable = mResponseRepository.getPizzaPlaces(query);
+
         Log.d(TAG, "ProjectViewModel: response" + projectJsonObservable);
     }
 
 
 
-    private void getDeviceLocation() {
+    public void getDeviceLocation() {
         Log.d(TAG, "getDeviceLocation: getting device location");
         /*
          * Get the best and most recent location of the device, which may be null in rare
@@ -100,7 +102,7 @@ public class ProjectViewModel extends AndroidViewModel {
         }
     }
 
-    private void getPostalCode() {
+    public void getPostalCode() {
         try {
             List<Address> addresses;
             Geocoder geocoder = new Geocoder(mApplication.getApplicationContext(), Locale.getDefault());

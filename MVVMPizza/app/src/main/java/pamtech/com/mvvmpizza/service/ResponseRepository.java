@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import okhttp3.ResponseBody;
 import pamtech.com.mvvmpizza.service.retrofit.models.JsonResponse;
 import pamtech.com.mvvmpizza.service.retrofit.retrofitAPI.YahooApInterface;
 import pamtech.com.mvvmpizza.service.retrofit.retrofitAPI.YahooApiClient;
@@ -21,6 +22,7 @@ public class ResponseRepository {
 
 
     public ResponseRepository() {
+        Log.d(TAG, "ResponseRepository: building retrofit");
         buildYahooApiClient();
     }
 
@@ -32,18 +34,39 @@ public class ResponseRepository {
     public LiveData<JsonResponse> getPizzaPlaces(String query){
 
         final MutableLiveData<JsonResponse> data = new MutableLiveData<>();
+        Log.d(TAG, "getPizzaPlaces: query is " + query);
 
-/*        buildYahooApiClient();*/
-        yahooApInterface.getNearByPizza(query).enqueue(new Callback<JsonResponse>() {
+        yahooApInterface.getNearByPizza(query, "json", true, null).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+//                data.setValue(respons);
+                Log.d(TAG, "onResponse: " + response.body());
+                Log.d(TAG, "onResponse: data" + data.toString());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + call);
+
+            }
+        });
+        return data;
+    }
+
+    public LiveData<JsonResponse> getDefaultapi(){
+        final MutableLiveData<JsonResponse> data = new MutableLiveData<>();
+
+        yahooApInterface.getDefault().enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 data.setValue(response.body());
-                Log.d(TAG, "onResponse: data");
+                Log.d(TAG, "onResponse: " + response);
+                Log.d(TAG, "onResponse: data" + data.toString());
             }
 
             @Override
             public void onFailure(Call<JsonResponse> call, Throwable t) {
-               t.printStackTrace();
+                t.printStackTrace();
             }
         });
         return data;
